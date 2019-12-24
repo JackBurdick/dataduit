@@ -78,9 +78,12 @@ splits:
 
 ```
 ```python
+import dataduit as dd
+import yeahml as yml
 
-config = totfr.parse_config('some_path.yaml')
-out_info = totfr.create_tfr(config)
+config = dd.parse_config('some_path.yaml')
+out_info = dd.create_tfr(config)
+out_ds = dd.create_tfr(config)
 
 ################################################
 # Do something with the data...
@@ -88,7 +91,11 @@ out_info = totfr.create_tfr(config)
 
 ## build+train
 model = yml.build_model('<some_config>')
+
 yml.train_model(model, '<some_config>')
+# OR
+yml.train_model(model, dataset=out_ds)
+
 
 ## ... iterate+tune model as needed
 # yml.eval_model('') # on "leader_board" set
