@@ -5,9 +5,9 @@ from dataduit.dataset.io.read.location.memory.read import read_memory
 def read(config_dict):
 
     # TODO: this needs to be corrected
-    if config_dict["read"]["from"] == "records":
+    if config_dict["read"]["from_stage"] == "records":
         raise NotImplementedError("reading from records not supported yet")
-    elif config_dict["read"]["from"] == "preprocessed":
+    elif config_dict["read"]["from_stage"] == "preprocessed":
         datasets = read_local(config_dict)
     else:
         raise NotImplementedError(
@@ -15,4 +15,3 @@ def read(config_dict):
         )
 
     return datasets
-

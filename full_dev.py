@@ -1,7 +1,7 @@
 conf_dict = {
     "meta": {
         "name": "mnist",
-        "root_location": "<some_path>",
+        "root_location": "../datasets",  # relative path
         "logging": {"log_stream_level": "INFO"},
         "in": {
             "from": "online",  # memory, local, online
