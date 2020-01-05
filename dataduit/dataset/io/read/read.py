@@ -2,15 +2,17 @@ from dataduit.dataset.io.read.location.local.read import read_local
 from dataduit.dataset.io.read.location.memory.read import read_memory
 
 
-def create_ds(config_dict):
+def read(config_dict):
 
     # TODO: this needs to be corrected
-    if (
-        config_dict["obtain"]["primary_location"] == "local"
-        or config_dict["obtain"]["primary_location"] == "online"
-    ):
+    if config_dict["read"]["from"] == "records":
+        raise NotImplementedError("reading from records not supported yet")
+    elif config_dict["read"]["from"] == "preprocessed":
         datasets = read_local(config_dict)
-    # elif config_dict["location"] == "memory":
-    #     train_ds, valid_ds, test_ds = read_memory(config_dict)
+    else:
+        raise NotImplementedError(
+            f"reading from {config_dict['read']['from']} not supported yet"
+        )
+
     return datasets
 

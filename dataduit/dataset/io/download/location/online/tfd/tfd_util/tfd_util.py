@@ -1,28 +1,30 @@
-import tensorflow_datasets as tfds
-from dataduit.log.dataduit_logging import config_logger
 from typing import Any, Dict
 
+import tensorflow_datasets as tfds
 
-def obtain_datasets(config_dict) -> Dict[str, Any]:
-    logger = config_logger(config_dict["logging"], "download")
+from dataduit.log.dataduit_logging import config_logger
+
+
+def obtain_datasets(config_dict: Dict[str, Any]) -> Dict[str, Any]:
+    logger = config_logger(config_dict["meta"]["logging"], "download")
     logger.debug(f"obtain_datasets({config_dict}")
 
     try:
-        dataset_name = config_dict["obtain"]["name"]
+        dataset_name = config_dict["meta"]["name"]
     except KeyError:
         raise KeyError(
             f"no dataset specified. please select one of {tfds.list_builders()}"
         )
 
     try:
-        split_percents = config_dict["create"]["split_percents"]
+        split_percents = config_dict["read"]["split_percents"]
     except KeyError:
         raise KeyError(
             f"no split specified. Please specify a split. an example may be {[75, 15, 10]}"
         )
 
     try:
-        split_names = config_dict["create"]["split_names"]
+        split_names = config_dict["read"]["split_names"]
     except KeyError:
         raise KeyError(
             f"no split specified. Please specify a split. an example may be {['train', 'val', 'test']}"
@@ -50,12 +52,14 @@ def obtain_datasets(config_dict) -> Dict[str, Any]:
     return datasets
 
 
-def dataset_info(config_dict):
-    logger = config_logger(config_dict["logging"], "download")
+def dataset_info(config_dict: Dict[str, Any]) -> Any:
+
+    # returntype: tensorflow_datasets.core.dataset_info.DatasetInfo
+    logger = config_logger(config_dict["meta"]["logging"], "download")
     logger.debug(f"dataset_info({config_dict}")
 
     try:
-        dataset_name = config_dict["obtain"]["dataset_name"]
+        dataset_name = config_dict["meta"]["name"]
     except KeyError:
         raise KeyError(
             f"no dataset specified. please select one of {tfds.list_builders()}"
