@@ -1,6 +1,7 @@
 from typing import Any, Dict
 
 import tensorflow_datasets as tfds
+import pathlib
 
 from dataduit.log.dataduit_logging import config_logger
 
@@ -30,6 +31,13 @@ def obtain_datasets(config_dict: Dict[str, Any]) -> Dict[str, Any]:
             f"no split specified. Please specify a split. an example may be {['train', 'val', 'test']}"
         )
 
+    try:
+        root_dir = config_dict["meta"]["root_location"]
+        root_dir = pathlib.Path(root_dir).joinpath("tfd")
+    except KeyError:
+        root_dir = None
+    logger.info(f"root dir set to {root_dir}")
+
     assert len(split_percents) == len(
         split_names
     ), f"dataset percents(len:{len(split_percents)})and names(len:{len(split_names)}) don't match splits({split_percents}), names({split_names})"
@@ -46,7 +54,9 @@ def obtain_datasets(config_dict: Dict[str, Any]) -> Dict[str, Any]:
     ds_split_percents = tfds.Split.TRAIN.subsplit(split_percents)
     datasets = {}
     for i, ds_split_percent in enumerate(ds_split_percents):
-        cur_ds = tfds.load(dataset_name, split=ds_split_percent, as_supervised=True)
+        cur_ds = tfds.load(
+            dataset_name, data_dir=root_dir, split=ds_split_percent, as_supervised=True
+        )
         datasets[split_names[i]] = cur_ds
 
     return datasets

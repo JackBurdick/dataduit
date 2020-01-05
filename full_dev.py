@@ -22,6 +22,7 @@ conf_dict = {
                         "special": {
                             "type": "path",
                             "to_do": "read",
+                            "image": {"encoding": "<some_ext>"},
                         },  # I'm thinking about a path to imagery here
                         "identifier": {"in": {}, "out": {}},
                         "datatype": {"in": {}, "out": {}},
