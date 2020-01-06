@@ -31,16 +31,16 @@ def obtain_datasets(config_dict: Dict[str, Any]) -> Dict[str, Any]:
             f"no split specified. Please specify a split. an example may be {['train', 'val', 'test']}"
         )
 
+    assert len(split_percents) == len(
+        split_names
+    ), f"dataset percents(len:{len(split_percents)})and names(len:{len(split_names)}) don't match splits({split_percents}), names({split_names})"
+
     try:
         root_dir = config_dict["meta"]["root_location"]
         root_dir = pathlib.Path(root_dir).joinpath("tfd")
     except KeyError:
         root_dir = None
     logger.info(f"root dir set to {root_dir}")
-
-    assert len(split_percents) == len(
-        split_names
-    ), f"dataset percents(len:{len(split_percents)})and names(len:{len(split_names)}) don't match splits({split_percents}), names({split_names})"
 
     # TODO: another option should be to use the common/listed test split
     # TODO: ensure:

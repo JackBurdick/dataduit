@@ -12,7 +12,7 @@ def read_local(config_dict):
     except KeyError:
         read_type = None
         logger.info(
-            "read_local type 'meta':'in':'type' not defined, set to 'records' by defauls"
+            "read_local type 'meta':'in':'type' not defined, set to 'records' by default"
         )
 
     # TODO: this will need to change. only set up this way since tf will automatically
