@@ -16,22 +16,23 @@ conf_dict = {
         "split_names": ["train", "val", "test"],
         # if "out" is missing in each of "identifier", "datatype", "shape", and "missing", in is used
         "iterate": {
-            "schema": {
+            "return_type": "tuple",  # ["tuple", or dict]
+            "schema": {  # the order defined below is the order in which items will be returned. only simple logic allowed
                 "x": {
-                    "identifier": {"in": "image"},
+                    "identifier": "image",
                     "datatype": {"in": "int64", "out": {}},
                     "shape": {"in": {"dim": [28, 28, 1]}, "out": {}},
                     "missing": {"skip_row": True, "log": True, "create_mask": True},
                     # "statistics": {<if anything is known.. max/min val, median, basic stats?>}
                 },
                 "y": {
-                    "identifier": {"in": "label"},
+                    "identifier": "label",
                     "datatype": {"in": {}, "out": {}},
                     "shape": {"in": {}, "out": {}},
                     "missing": {"skip_row": True, "log": True, "create_mask": True},
                     # "statistics": {<if anything is known.. max/min val, median, basic stats?>}
                 },
-            }
+            },
         },
     },
 }

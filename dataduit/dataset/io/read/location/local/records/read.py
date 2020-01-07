@@ -81,6 +81,11 @@ def read_tf_from_dir(config_dict):
         cycle_length=tf.data.experimental.AUTOTUNE,
     )
 
+    try:
+        keys = config_dict["read"]["iterate"]["schema"].keys()
+    except KeyError:
+        raise KeyError("no keys specified by read:iterate:schema")
+
     feature_description = {
         # TODO: abstract
         # TODO: shape
@@ -101,6 +106,28 @@ def read_tf_from_dir(config_dict):
         return example_proto
 
     full_dataset = full_dataset.map(_decode)
+
+    # return logic
+    try:
+        r_type = config_dict["read"]["iterate"]["return_type"]
+    except KeyError:
+        r_type = None
+
+    def _output_as_tuple(example_proto, keys):
+        o = []
+        for k in keys:
+            o.append(example_proto[k])
+
+        return tf.tuple(o)
+
+    if r_type == "tuple":
+        # TODO: this ...works... but it will need to be profiled and optimized
+        # particularly the part in _output_as_tuple where we iterate over the keys
+        identifiers = []
+        for k in keys:
+            identifier = config_dict["read"]["iterate"]["schema"][k]["identifier"]
+            identifiers.append(identifier)
+        full_dataset = full_dataset.map(lambda x: _output_as_tuple(x, identifiers))
 
     datasets["train"] = full_dataset
 
