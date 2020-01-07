@@ -3,6 +3,7 @@ import pathlib
 import tensorflow as tf
 import tensorflow_datasets as tfds
 from dataduit.log.dataduit_logging import config_logger
+from dataduit.dataset.io.read.location.local.records.parse import return_parse_feature
 
 
 def read_tf_from_dir(config_dict):
@@ -86,12 +87,22 @@ def read_tf_from_dir(config_dict):
     except KeyError:
         raise KeyError("no keys specified by read:iterate:schema")
 
-    feature_description = {
-        # TODO: abstract
-        # TODO: shape
-        "image": tf.io.VarLenFeature(tf.string),
-        "label": tf.io.FixedLenFeature([], dtype=tf.int64),
-    }
+    feature_description = {}
+    for k in keys:
+        try:
+            feat_names = config_dict["read"]["iterate"]["schema"][k].keys()
+        except KeyError:
+            raise KeyError(
+                f"no feature names described by read:iterate:schema -- > {config_dict['read']['iterate']}"
+            )
+        for feat in feat_names:
+            try:
+                dt_conf = config_dict["read"]["iterate"]["schema"][k][feat]["datatype"]
+            except KeyError:
+                raise KeyError(
+                    f"no datatype config defined for key {k}, feat {feat}: {config_dict['read']['iterate']['schema']}"
+                )
+            feature_description[feat] = return_parse_feature(dt_conf)
 
     def _parse_function(example_proto):
         # Parse the input `tf.Example` proto using the dictionary above.
@@ -125,8 +136,7 @@ def read_tf_from_dir(config_dict):
         # particularly the part in _output_as_tuple where we iterate over the keys
         identifiers = []
         for k in keys:
-            identifier = config_dict["read"]["iterate"]["schema"][k]["identifier"]
-            identifiers.append(identifier)
+            identifiers.extend(list(config_dict["read"]["iterate"]["schema"][k].keys()))
         full_dataset = full_dataset.map(lambda x: _output_as_tuple(x, identifiers))
 
     datasets["train"] = full_dataset

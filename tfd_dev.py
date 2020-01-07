@@ -18,19 +18,27 @@ conf_dict = {
         "iterate": {
             "return_type": "tuple",  # ["tuple", or dict]
             "schema": {  # the order defined below is the order in which items will be returned. only simple logic allowed
+                # TODO: we need to ensure there are no name collisions here/across each highlevel grouping
                 "x": {
-                    "identifier": "image",
-                    "datatype": {"in": "int64", "out": {}},
-                    "shape": {"in": {"dim": [28, 28, 1]}, "out": {}},
-                    "missing": {"skip_row": True, "log": True, "create_mask": True},
-                    # "statistics": {<if anything is known.. max/min val, median, basic stats?>}
+                    "image": {
+                        "datatype": {
+                            "in": {"dtype": "string", "type": "VarLenFeature"},
+                            "out": {},
+                        },
+                        "shape": {"in": {"dim": [28, 28, 1]}, "out": {}},
+                        "special": "decode",
+                    }
                 },
                 "y": {
-                    "identifier": "label",
-                    "datatype": {"in": {}, "out": {}},
-                    "shape": {"in": {}, "out": {}},
-                    "missing": {"skip_row": True, "log": True, "create_mask": True},
-                    # "statistics": {<if anything is known.. max/min val, median, basic stats?>}
+                    "label": {
+                        "datatype": {
+                            "in": {"dtype": "int64", "type": "FixedLenFeature"},
+                            "out": {},
+                        },
+                        "shape": {"in": {}, "out": {}},
+                    },
+                    # "missing": {"skip_row": True, "log": True, "create_mask": True},
+                    # "statistics": {<if anything is known.. max/min val, median, basic stats?>}}
                 },
             },
         },
@@ -42,3 +50,4 @@ conf_dict = {
 #                 location: "<_path_>"
 #             fill_with: ['nan', 'mean', 'median', ...]
 #             mask: ['True', 'False']
+
