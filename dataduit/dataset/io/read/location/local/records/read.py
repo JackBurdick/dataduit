@@ -93,7 +93,7 @@ def read_tf_from_dir(config_dict):
             feat_names = config_dict["read"]["iterate"]["schema"][k].keys()
         except KeyError:
             raise KeyError(
-                f"no feature names described by read:iterate:schema -- > {config_dict['read']['iterate']}"
+                f"no feature names described by read:iterate:schema ({config_dict['read']['iterate']})"
             )
         for feat in feat_names:
             try:

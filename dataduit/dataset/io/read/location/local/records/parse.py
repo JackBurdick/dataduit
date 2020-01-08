@@ -1,38 +1,17 @@
 import tensorflow as tf
 
-
-def _return_dtype(dtype_str):
-    # TODO: automate this
-    if dtype_str == "string":
-        return tf.string
-    elif dtype_str == "int64":
-        return tf.int64
-    else:
-        raise NotImplementedError("dtype {dtype_str} not currently supported")
-
-
-def _return_feature_type(feat_str, tf_dtype):
-    # TODO: automate this
-    if feat_str.lower() == "FixedLenFeature".lower():
-        return tf.io.FixedLenFeature([], tf_dtype)
-    elif feat_str.lower() == "VarLenFeature".lower():
-        return tf.io.VarLenFeature(tf_dtype)
+from dataduit.libraries.tensorflow.components.feature_ops import return_configured_dtype
 
 
 def return_parse_feature(parse_config):
 
     # datatype
     try:
-        dtype_in_str = parse_config["in"]["dtype"]
+        opt_dict = parse_config["in"]
     except KeyError:
-        raise KeyError(f"no in datatype described by {parse_config['in']}")
-    tf_dtype = _return_dtype(dtype_in_str)
+        raise KeyError(f"no parse op information :in {parse_config}")
 
-    try:
-        type_str = parse_config["in"]["type"]
-    except KeyError:
-        raise KeyError(f"no type described by {parse_config['in']}")
-    parse_feature = _return_feature_type(type_str, tf_dtype)
+    parse_feature = return_configured_dtype(opt_dict)
 
     return parse_feature
 

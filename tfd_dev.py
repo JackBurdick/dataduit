@@ -22,7 +22,10 @@ conf_dict = {
                 "x": {
                     "image": {
                         "datatype": {
-                            "in": {"dtype": "string", "type": "VarLenFeature"},
+                            "in": {
+                                "type": "VarLenFeature",
+                                "options": {"dtype": "string"},
+                            },
                             "out": {},
                         },
                         "shape": {"in": {"dim": [28, 28, 1]}, "out": {}},
@@ -32,7 +35,10 @@ conf_dict = {
                 "y": {
                     "label": {
                         "datatype": {
-                            "in": {"dtype": "int64", "type": "FixedLenFeature"},
+                            "in": {
+                                "type": "FixedLenFeature",
+                                "options": {"dtype": "int64", "shape": 1},
+                            },
                             "out": {},
                         },
                         "shape": {"in": {}, "out": {}},
@@ -50,4 +56,3 @@ conf_dict = {
 #                 location: "<_path_>"
 #             fill_with: ['nan', 'mean', 'median', ...]
 #             mask: ['True', 'False']
-
