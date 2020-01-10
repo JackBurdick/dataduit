@@ -11,6 +11,7 @@ conf_dict = {
     "read": {  # create_ds should call obtain()
         # "from_stage": "memory",  # ["records","preprocessed"]
         # "split_defaults": False # this would use the default splits specified (by TF datasets)
+        # TODO: in the parse_config - ensure these values sum to 100
         "split_percents": [75, 15, 10],  # currently only support percents
         "split_names": ["train", "val", "test"],
         # if "out" is missing in each of "identifier", "datatype", "shape", and "missing", in is used
