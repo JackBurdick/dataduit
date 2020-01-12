@@ -20,7 +20,6 @@ def read_memory(config_dict, obj):
         # TODO: push block down a level
     if data_read_type == "pandas":
         datasets = read_pandas(config_dict, obj)
-        raise NotImplementedError(f"{data_read_type} currently not supported")
     elif data_read_type == "records":
         raise NotImplementedError(f"{data_read_type} currently not supported")
     elif data_read_type == "tfd":

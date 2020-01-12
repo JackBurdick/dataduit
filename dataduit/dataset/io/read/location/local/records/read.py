@@ -139,6 +139,7 @@ def read_tf_from_dir(config_dict):
             identifiers.extend(list(config_dict["read"]["iterate"]["schema"][k].keys()))
         full_dataset = full_dataset.map(lambda x: _output_as_tuple(x, identifiers))
 
+    # TODO: JACK
     datasets["train"] = full_dataset
 
     return datasets

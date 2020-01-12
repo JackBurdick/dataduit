@@ -21,20 +21,22 @@ conf_dict = {
                 # TODO: we need to ensure there are no name collisions here/across each highlevel grouping
                 "x": {
                     "length": {
+                        "indicator": "length",
                         "datatype": {
                             "in": {
                                 "type": "FixedLenFeature",
-                                "options": {"dtype": "int64", "shape": 1},
+                                "options": {"dtype": "float64", "shape": 1},
                             },
                             "out": {},
                         },
                         "special": "decode",
                     },
                     "diameter": {
+                        "indicator": "diameter",
                         "datatype": {
                             "in": {
                                 "type": "FixedLenFeature",
-                                "options": {"dtype": "int64", "shape": 1},
+                                "options": {"dtype": "float64", "shape": 1},
                             },
                             "out": {},
                         },
